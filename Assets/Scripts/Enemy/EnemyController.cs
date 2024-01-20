@@ -15,13 +15,18 @@ public class EnemyController : MonoBehaviour
     public int enemyCount;
     public float spawnInterval = 1f;
 
+    public GameObject dieParticlePrefab;
+
+    public AudioSource characterDieAS;
+    public AudioClip characterDieAC;
+
     public CardController cardController;
 
 
     private void Start()
     {
         attributesManager = GetComponent<AttributesManager>();
-
+        
         if (agent == null)
         {
             Debug.LogError("NavMeshAgent component not found on the enemy object.");
@@ -49,12 +54,19 @@ public class EnemyController : MonoBehaviour
             playerStats.GetComponent<PlayerStats>().TakeDamage(damage);
             if (playerStats.currentHealth <= 0)
             {
+                if (dieParticlePrefab != null)
+                {
+                    GameObject particleEffect = Instantiate(dieParticlePrefab, transform.position, Quaternion.identity);
+                    Destroy(particleEffect, 2f);
+                    characterDieAS.Play();
+                }
                 Debug.Log("DIE");
-                Time.timeScale = 0;
-                //cardController.cardPanel.SetActive(true);
+                Time.timeScale = 1;
+                cardController.cardPanel.SetActive(false);
             }
+            
         }
     }
-
+   
 
 }

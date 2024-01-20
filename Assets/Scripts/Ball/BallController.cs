@@ -6,7 +6,10 @@ public class BallController : MonoBehaviour
 {
     ObjectPool pool;
     public GameObject particleEffectPrefab;
+    public EnemySpawner enemySpawner;
 
+    public AudioSource hitAS;
+    public AudioClip hitAC;
     private void Start()
     {
         pool = FindObjectOfType<ObjectPool>();
@@ -17,12 +20,16 @@ public class BallController : MonoBehaviour
         {
             CameraShake.Invoke();           
             pool.ReleaseEnemy(other.gameObject);
+            hitAS.Play(); 
 
             if (particleEffectPrefab != null)
             {
                 GameObject particleEffect = Instantiate(particleEffectPrefab, other.transform.position, Quaternion.identity);
                 Destroy(particleEffect, 2f);
             }
+
+            enemySpawner.NotifyEnemyKilled();
         }
     }
+   
 }

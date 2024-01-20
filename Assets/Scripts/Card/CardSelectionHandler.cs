@@ -73,19 +73,6 @@ public class CardSelectionHandler : MonoBehaviour,IPointerEnterHandler,IPointerE
         StartCoroutine(MoveCard(false));
     }
 
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    StartCoroutine(MoveCard(true));
-    //    Debug.Log("Clicked");
-    //}
-
-    //private CardData.CardType DetermineCardType()
-    //{
-    //    Array cardTypes = Enum.GetValues(typeof(CardData.CardType));
-    //    CardData.CardType randomCardType = (CardData.CardType)cardTypes.GetValue(UnityEngine.Random.Range(0, cardTypes.Length));
-
-    //    return randomCardType;
-    //}
 
 
 }

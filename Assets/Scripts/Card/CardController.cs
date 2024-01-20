@@ -21,7 +21,7 @@ public class CardController : MonoBehaviour
         speedCardButton.onClick.AddListener(() => CardSelected(Card.speed));
         speedBallCardButton.onClick.AddListener(() => CardSelected(Card.speedBall));
         healthCardButton.onClick.AddListener(() => CardSelected(Card.health));
-
+        
         
         cardPanel.SetActive(false);
 
@@ -48,10 +48,14 @@ public class CardController : MonoBehaviour
                 break;
         }
 
-        // Kart seçildiðinde paneli gizle
+        
         gameObject.SetActive(false);
     }
+  
+
 }
+
+
 
 public enum Card
 {

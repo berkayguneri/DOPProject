@@ -44,11 +44,11 @@ public class TopDownCharacterMover : MonoBehaviour
         
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
+
         
         var movementVector = MoveTowardTarget(targetVector);
 
-        //healthText.text = "Health :" + health.ToString();
-        speedText.text = "Speed :" + MovementSpeed.ToString();
+       
 
         if (!RotateTowardMouse)
         {
@@ -59,7 +59,7 @@ public class TopDownCharacterMover : MonoBehaviour
             RotateFromMouseVector();
         }
         Mouse();
-
+        anim.SetBool("speed", targetVector.magnitude > 0);
     }
 
     private void RotateFromMouseVector()
@@ -106,11 +106,4 @@ public class TopDownCharacterMover : MonoBehaviour
     {
         MovementSpeed += 10;
     }
-
-
-
-
-
-
-
 }
