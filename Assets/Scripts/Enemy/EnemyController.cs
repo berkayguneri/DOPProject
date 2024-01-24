@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -22,24 +23,23 @@ public class EnemyController : MonoBehaviour
 
     public CardController cardController;
 
+    public Animator animator;
+
+    public GameObject restartButton;
+
 
     private void Start()
     {
         attributesManager = GetComponent<AttributesManager>();
-        
-        if (agent == null)
-        {
-            Debug.LogError("NavMeshAgent component not found on the enemy object.");
-        }
 
-       
+        restartButton.gameObject.SetActive(false);
+
     }
     private void Update()
     {
   
         if (gameObject.activeSelf && agent != null && agent.isOnNavMesh)
         {
-
             agent.SetDestination(player.position);
         }
             playerStats = FindObjectOfType<PlayerStats>();
@@ -61,12 +61,19 @@ public class EnemyController : MonoBehaviour
                     characterDieAS.Play();
                 }
                 Debug.Log("DIE");
-                Time.timeScale = 1;
+                restartButton.gameObject.SetActive(true);
+                Time.timeScale = 0;
                 cardController.cardPanel.SetActive(false);
             }
             
         }
     }
-   
+
+
+    public void RestartButton()
+    {
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1;
+    }
 
 }

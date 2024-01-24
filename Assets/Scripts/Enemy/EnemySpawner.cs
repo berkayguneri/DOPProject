@@ -30,8 +30,10 @@ public class EnemySpawner : MonoBehaviour
     private int killedEnemiesCount = 0;
 
     public int currentWave = 1;
-    public int totalWaves = 4; // Toplam kaç wave olacaksa burayý ayarlayýn
+    public int totalWaves = 4;
     private bool isGameOver = false;
+
+    public GameObject restartButton;
 
     private void Start()
     {
@@ -87,13 +89,13 @@ public class EnemySpawner : MonoBehaviour
 
         while (elapsedTime < spawnDuration)
         {
-            xPos = Random.Range(-5, 5);
-            zPos = Random.Range(-23, 10);
+            xPos = Random.Range(-15, 20);
+            zPos = Random.Range(-15, 20);
             GameObject enemy = objectPool.GetPooledEnemy();
             enemy.SetActive(true);
             if (enemy != null)
             {
-                enemy.transform.position = new Vector3(Random.Range(-5, 5), 1, Random.Range(-23, 10));
+                enemy.transform.position = new Vector3(Random.Range(-15, 20), 1, Random.Range(-15, 20));
             }
             yield return new WaitForSeconds(spawnInterval);
             elapsedTime += spawnInterval;
@@ -126,10 +128,10 @@ public class EnemySpawner : MonoBehaviour
     }
     public void NotifyEnemyKilled()
     {
-        // Bu metod, düþmanýn öldüðü bilgisini alýr ve sayacý arttýrýr.
+       
         killedEnemiesCount++;
 
-        // Öldürülen düþman sayýsýný güncelleyip görüntüler.
+        
         killedEnemiesText.text = "Killed Enemies: " + killedEnemiesCount;
     }
 
@@ -146,11 +148,12 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            // Toplam dalga sayýsýna ulaþýldýðýnda oyunu tamamlanmýþ kabul edebilirsiniz.
+            
             Debug.Log("Oyun tamamlandý.");
             if (!isGameOver)
             {
                 cardController.cardPanel.gameObject.SetActive(false);
+                restartButton.gameObject.SetActive(true);
                 isGameOver = true;
                 Time.timeScale = 0;
             }
@@ -162,7 +165,7 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        // Mevcut dalga sayýsýný bir arttýr
+        
         currentWave++;
 
 
@@ -173,20 +176,19 @@ public class EnemySpawner : MonoBehaviour
         // wave2Text.gameObject.SetActive(true);
 
 
-        // Yeni wave baþladýðýnda düþmanlarý spawn et
-        //StartCoroutine(SpawnEnemies());
+        
         if (currentWave <= totalWaves)
         {
-            // Oyun devam ediyorsa yeni wave için düþmanlarý spawn et
+            
             StartCoroutine(SpawnEnemies());
         }
         else if (currentWave == totalWaves + 1)
         {
-            // Oyun tamamlandýðýnda burada ek iþlemler yapabilirsiniz.
-            // Örneðin, Game Over ekranýný açabilirsiniz.
+            // oyun tamamlandiginda eklenecek islemler
             cardController.cardPanel.SetActive(false);
             isGameOver = true;
             Time.timeScale = 0;
+            restartButton.gameObject.SetActive(true);
         }
     }
 
@@ -203,7 +205,7 @@ public class EnemySpawner : MonoBehaviour
         wave3Text.gameObject.SetActive(false);
         wave4Text.gameObject.SetActive(false);
 
-        // Ardýndan sadece ilgili wave text'i aktif edilir
+        
         switch (waveNumber)
         {
             case 1:

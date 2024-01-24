@@ -12,11 +12,6 @@ public class TopDownCharacterMover : MonoBehaviour
     private bool RotateTowardMouse;
 
     public float health;
-    [Header("Text")]
-    //[SerializeField]
-    //private Text healthText;
-    [SerializeField]
-    private Text speedText;
 
     public float MovementSpeed;
     [SerializeField]
@@ -33,6 +28,12 @@ public class TopDownCharacterMover : MonoBehaviour
 
     public float damage;
 
+    public AudioSource stickHitAS;
+    public AudioClip stichHitAC;
+
+    private float lastClickTime; 
+    public float clickInterval = 1f;
+
     private void Awake()
     {
         _input = GetComponent<InputHandler>();
@@ -41,15 +42,9 @@ public class TopDownCharacterMover : MonoBehaviour
     
     void Update()
     {
-        
-
-        var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
-
-        
+        var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);        
         var movementVector = MoveTowardTarget(targetVector);
-
        
-
         if (!RotateTowardMouse)
         {
             RotateTowardMovementVector(movementVector);
@@ -97,11 +92,22 @@ public class TopDownCharacterMover : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            cursorWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 17.720f));
-            anim.SetTrigger("hitting");
+            float currentTime = Time.time;
+            if (currentTime - lastClickTime > clickInterval)
+            {
+                cursorWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 17.720f));
+                anim.SetTrigger("hitting");
+                stickHitAS.Play();
+
+                lastClickTime = currentTime;
+            }
+            
+
         }
 
     }
+
+    
     public void IncreaseSpeed()
     {
         MovementSpeed += 10;
